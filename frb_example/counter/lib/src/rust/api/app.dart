@@ -3,9 +3,8 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-
 import '../frb_generated.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<RustState>>
 abstract class RustState implements RustOpaqueInterface {
@@ -13,9 +12,9 @@ abstract class RustState implements RustOpaqueInterface {
 
   set count(int count);
 
-  Future<void> increment();
+  void increment();
 
   factory RustState() => RustLib.instance.api.crateApiAppRustStateNew();
 
-  Future<void> setBaseState({required BaseRustState baseState});
+  void setBaseState({required BaseRustState baseState});
 }

@@ -65,7 +65,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 
   @override
   Future<void> executeRustInitializers() async {
-    await api.crateApiSimpleInitApp();
+    api.crateApiSimpleInitApp();
   }
 
   @override
@@ -97,16 +97,16 @@ abstract class RustLibApi extends BaseApi {
   void crateApiAppRustStateAutoAccessorSetCount(
       {required RustState that, required int count});
 
-  Future<void> crateApiAppRustStateIncrement({required RustState that});
+  void crateApiAppRustStateIncrement({required RustState that});
 
   RustState crateApiAppRustStateNew();
 
-  Future<void> crateApiAppRustStateSetBaseState(
+  void crateApiAppRustStateSetBaseState(
       {required RustState that, required BaseRustState baseState});
 
   String crateApiSimpleGreet({required String name});
 
-  Future<void> crateApiSimpleInitApp();
+  void crateApiSimpleInitApp();
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_BaseRustState;
@@ -241,14 +241,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiAppRustStateIncrement({required RustState that}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+  void crateApiAppRustStateIncrement({required RustState that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustState(
             that, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -290,17 +289,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiAppRustStateSetBaseState(
+  void crateApiAppRustStateSetBaseState(
       {required RustState that, required BaseRustState baseState}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerRustState(
             that, serializer);
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBaseRustState(
             baseState, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 7, port: port_);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -342,12 +340,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiSimpleInitApp() {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+  void crateApiSimpleInitApp() {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -914,12 +911,10 @@ class RustStateImpl extends RustOpaque implements RustState {
   set count(int count) => RustLib.instance.api
       .crateApiAppRustStateAutoAccessorSetCount(that: this, count: count);
 
-  Future<void> increment() =>
-      RustLib.instance.api.crateApiAppRustStateIncrement(
+  void increment() => RustLib.instance.api.crateApiAppRustStateIncrement(
         that: this,
       );
 
-  Future<void> setBaseState({required BaseRustState baseState}) =>
-      RustLib.instance.api
-          .crateApiAppRustStateSetBaseState(that: this, baseState: baseState);
+  void setBaseState({required BaseRustState baseState}) => RustLib.instance.api
+      .crateApiAppRustStateSetBaseState(that: this, baseState: baseState);
 }

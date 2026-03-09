@@ -36,17 +36,28 @@ class CounterPage extends StatefulWidget {
 
 class _CounterState extends State<CounterPage> {
   late final RustState state;
+  late final BaseRustState baseState;
 
   @override
   void initState() {
     super.initState();
     state = RustState();
+    baseState = BaseRustState(onMutate: () {
+      if (mounted) setState(() {});
+    });
+    state.setBaseState(baseState: baseState);
   }
 
   void _increment() {
     setState(() {
       state.increment();
     });
+  }
+
+  @override
+  void dispose() {
+    baseState.dispose();
+    super.dispose();
   }
 
   @override
